@@ -1,50 +1,85 @@
-# Electricity Billing & Revenue Assurance — Mini Audit
 
-A small, **fictional learning project** for a graduate analyst portfolio. **Not affiliated with Meridian Energy**. All customer identifiers, bills and pricing rules are invented.
+# Data Quality & Revenue Reconciliation Tool
 
-## Business question
+## Overview
 
-Did the sample electricity invoices apply the correct per-kWh rate? If not, which customers may need a billing correction, and what is the overall revenue difference?
+A Python-based practice project that checks simulated
+electricity invoices against pricing rules and identifies
+billing discrepancies.
 
-## Model assumptions / limitations
+The project focuses on data quality, business rule
+validation, financial reconciliation and reporting.
 
-- Electricity usage is measured in kWh and billed at the applicable plan's flat rate.
-- An invoice's price is chosen by `plan` and `invoice_month`. September and October have different prices to simulate a price update.
-- All billed and expected amounts are **NZD, excluding GST**.
-- This deliberately simplified model excludes fixed daily charges, discounts, GST, time-of-use rates and meter readings. It is **not a model of Meridian's actual pricing or New Zealand electricity regulations**.
-- For money calculations in Python, prefer `decimal.Decimal`. For SQL, round to cents when reporting.
-- Difference = **billed - expected**; negative = undercharge, positive = overcharge.
+## Technologies
 
-## Files
+- Python 3
+- CSV data processing
+- Decimal for financial calculations
 
-- `data/rates.csv` — sample plan prices for September and October 2026.
-- `data/invoices.csv` — sample invoices, including deliberate exceptions to find.
-- `load_to_sqlite.py` — ready-to-run helper that loads both CSVs into `billing_demo.sqlite`.
-- `queries.sql` — starter query + SQL exercise prompts (complete these yourself).
-- `audit.py` — Python task outline (complete this yourself).
-- `output/` — save `audit_results.csv`, charts and reports here.
+## Business Problem
 
-## Fast route: 2 hours (Excel + SQL)
+How can billing records be checked against applicable
+pricing rules to identify incorrect charges and
+potential revenue impacts?
 
-1. **Excel (45–60 minutes):** Open both CSVs. Use lookup to match the plan/month rate to each invoice, calculate `expected_nzd`, `difference_nzd`, and `status`, filter mismatches, and make a summary with counts and totals.
-2. **SQL (35–45 minutes):** Run `python load_to_sqlite.py`, then complete `queries.sql` in a SQLite editor (or VS Code SQLite extension). Use `JOIN`, `ROUND`, `CASE`, `GROUP BY`.
-3. **Explain findings (15–20 minutes):** Write 3–5 sentences in English about any exceptions, their total impact and one improvement idea.
+## Features
 
-## Full route: 3–5 hours (plus Python & GitHub)
+- Load invoice and pricing datasets from CSV files
+- Match pricing rules by plan and invoice month
+- Calculate expected charges
+- Identify undercharged and overcharged invoices
+- Export reconciliation results to CSV
+- Perform sample-specific validation checks
 
-4. **Python (60–90 minutes):** Finish `audit.py` and export `output/audit_results.csv`.
-5. **QA checks (15–25 minutes):** Confirm a valid invoice is labelled OK, an undercharge is negative, an overcharge is positive, and a price change uses the October rate.
-6. **Portfolio (20–30 minutes):** Document how you tested it, add a screenshot of the Excel summary or a one-page results report, and push to GitHub. Never include real customer details.
+## Results
 
-## Self-check (only check after trying)
+Analysed 12 simulated invoices and identified
+4 billing discrepancies.
 
-- Total invoices: **12**.
-- **4** invoices have intentionally incorrect billed amounts.
-- Deliberate exceptions: **INV004, INV005, INV008, INV011**.
-- Undercharges total **NZD 5.00**, overcharges total **NZD 2.00**.
-- Net billing difference (billed minus expected): **NZD -3.00**.
-- The October rate increase would add **NZD 13.70** in total to the seven October sample invoices versus old rates, **holding October kWh constant**.
+| Metric | Result |
+|---|---:|
+| Total invoices | 12 |
+| Correct invoices | 8 |
+| Billing exceptions | 4 |
+| Total undercharged | NZ$5.00 |
+| Total overcharged | NZ$2.00 |
+| Net difference | -NZ$3.00 |
 
-## Interview story (only say what you completed)
+Reporting undercharges and overcharges separately
+provides a clearer picture of billing accuracy than
+relying on the net difference alone.
 
-"I built a small fictional electricity billing audit using Excel, SQL and Python. I compared billed amounts against plan rates, investigated pricing exceptions and summarised the potential revenue impact. The exercise helped me understand pricing updates, reconciliation and data quality checks, which are central to this analyst role."
+## How to Run
+
+Requires Python 3. No external packages are needed.
+
+```bash
+python audit.py
+```
+
+The reconciliation results are exported to:
+
+`output/audit_results.csv`
+
+## Project Structure
+
+- `audit.py` — Python reconciliation script
+- `data/invoices.csv` — Simulated billing records
+- `data/rates.csv` — Simulated pricing rules
+- `output/audit_results.csv` — Generated results
+
+## Assumptions and Limitations
+
+- All data is fictional.
+- Pricing follows a simplified per-kWh model.
+- GST, fixed charges and discounts are excluded.
+- Pricing is matched using plan and invoice month.
+- Validation assertions apply to the sample dataset.
+- This is a learning project, not a production system.
+
+## Future Improvements
+
+- Add SQL-based reconciliation
+- Improve missing-data and error handling
+- Introduce automated unit tests
+- Visualise findings using Power BI
